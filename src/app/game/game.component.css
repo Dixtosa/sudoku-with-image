@@ -1,0 +1,21 @@
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+    grid-gap: 5px;
+}
+
+.sudoku-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+}
+
+.sudoku-cell {
+    position: absolute;
+    background: #fff;
+    outline: 1px solid #959595;
+    transform: scale3d(1, 1, 1);
+}
+
+.sudoku-cell img {
+    width: 60px;
+}
