@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PuzzlesDatabase } from '../puzzles-db'
 
 @Component({
   selector: 'app-game',
@@ -25,16 +26,19 @@ export class GameComponent implements OnInit {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
-  boardWithImages: number[][] = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  boardWithImages: (string | null)[][] = [
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+  ];
+  availableImages: string[][] = [
+    [], [], [], [], [], [], [], [], []
   ];
 
   // A method to handle user input and update the board
@@ -96,16 +100,28 @@ export class GameComponent implements OnInit {
 
   // Initialize the board with an example Sudoku puzzle (for testing)
   ngOnInit(): void {
-    this.board = [
-      [5, 3, 0, 0, 7, 0, 0, 0, 0],
-      [6, 0, 0, 1, 9, 5, 0, 0, 0],
-      [0, 9, 8, 0, 0, 0, 0, 6, 0],
-      [8, 0, 0, 0, 6, 0, 0, 0, 3],
-      [4, 0, 0, 8, 0, 3, 0, 0, 1],
-      [7, 0, 0, 0, 2, 0, 0, 0, 6],
-      [0, 6, 0, 0, 0, 0, 2, 8, 0],
-      [0, 0, 0, 4, 1, 9, 0, 0, 5],
-      [0, 0, 0, 0, 8, 0, 0, 7, 9],
-    ];
+    var puzzle = new PuzzlesDatabase().getEasy();
+    this.board = puzzle.board;
+    this.fillAvailableImages();
+    this.initializeBoardWithImages();
+  }
+  fillAvailableImages() {
+    for (let i = 0; i < this.availableImages.length; i++) {
+      const number = this.availableImages[i];
+      for (let j = 0; j < 9; j++) {
+        number.push((i + 1) + "/" + (j + 1));
+      }
+    }
+  }
+  initializeBoardWithImages() {
+    for (let i = 0; i < this.boardWithImages.length; i++) {
+      const row = this.boardWithImages[i];
+      for (let j = 0; j < row.length; j++) {
+        if (this.board[i][j] != 0) {
+          this.boardWithImages[i][j] = this.availableImages[this.board[i][j] - 1][0];
+          this.availableImages[this.board[i][j] - 1].shift();
+        }
+      }
+    }
   }
 }

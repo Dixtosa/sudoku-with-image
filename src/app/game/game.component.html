@@ -1,15 +1,17 @@
 <div class="sudoku-container">
     <table class="sudoku-board">
-        <tr *ngFor="let row of board; let rowIndex = index" class="sudoku-row">
-            <td *ngFor="let cell of row; let colIndex = index" class="sudoku-cell">
-                <img src="/images/{{boardWithImages[row][cell]}}.jpg" />
-            </td>
-        </tr>
+        <tbody>
+            <tr *ngFor="let row of board; let rowIndex = index" class="sudoku-row">
+                <td *ngFor="let cell of row; let colIndex = index" class="sudoku-cell">
+                    <img *ngIf="boardWithImages[rowIndex][colIndex]" src="assets/images/{{boardWithImages[rowIndex][colIndex]}}.jpg" />
+                </td>
+            </tr>
+        </tbody>
     </table>
-    <div>
-        <input type="text" [ngModel]="this.selectedNumber" />
-    </div>
-    <div class="actions">
-        <button (click)="validateBoard()">დამატება</button>
-    </div>
+</div>
+<div>
+    <input type="text" [ngModel]="this.selectedNumber" />
+</div>
+<div class="actions">
+    <button (click)="validateBoard()">დამატება</button>
 </div>
